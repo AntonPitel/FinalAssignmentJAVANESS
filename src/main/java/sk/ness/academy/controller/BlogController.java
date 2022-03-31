@@ -31,7 +31,11 @@ public class BlogController {
   // ~~ Article
   @RequestMapping(value = "articles", method = RequestMethod.GET)
   public List<ArticleWithOutComments> getAllArticles() {
-    return this.articleService.findAll();
+    try {
+      return this.articleService.findAll();
+    } catch(Exception e) {
+      throw new ApiRequestException("Incorrect path");
+    }
   }
 
   @RequestMapping(value = "articles/{articleId}", method = RequestMethod.GET)
@@ -59,7 +63,11 @@ public class BlogController {
 
   @RequestMapping(value = "articles", method = RequestMethod.PUT)
   public void addArticle(@RequestBody final Article article) {
-    this.articleService.createArticle(article);
+    try {
+      this.articleService.createArticle(article);
+    } catch(Exception e) {
+      throw new ApiRequestException("Could not add Article");
+    }
   }
 
   // ~~ Author
@@ -76,12 +84,20 @@ public class BlogController {
   // ~~ Comment
   @RequestMapping(value = "comments", method = RequestMethod.GET)
   public List<Comment> getComment() {
+    try {
       return this.commentService.findAllArticlesComments();
+    } catch(Exception e) {
+      throw new ApiRequestException("Could not find All Articles with Comments");
+    }
   }
 
   @RequestMapping(value = "comments", method = RequestMethod.PUT)
   public void addComment(@RequestBody final Comment comment) {
-    this.commentService.createComment(comment);
+    try {
+      this.commentService.createComment(comment);
+    } catch(Exception e) {
+      throw new ApiRequestException("Could not add comment");
+    }
   }
 
   @RequestMapping(value = "comments/{commentID}", method = RequestMethod.GET)
