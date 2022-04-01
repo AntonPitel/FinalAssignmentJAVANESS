@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import sk.ness.academy.domain.Article;
@@ -104,5 +105,10 @@ public class BlogController {
     } catch (Exception e) {
       throw new ApiRequestException("Could not delete comment");
     }
+  }
+
+  @RequestMapping(value = {"**", "authors/**"}, method = RequestMethod.GET)
+  public void badRequestPath() {
+    throw new ApiRequestException("Incorrect path", HttpStatus.BAD_REQUEST);
   }
 }
